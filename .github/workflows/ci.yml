@@ -23,3 +23,10 @@ jobs:
 
       - name: Lancer les tests Jest
         run: npx jest --coverage
+      
+      - name: Installer Playwright
+        run: npx playwright install --with-deps
+
+      - name: Lancer les tests E2E (Playwright)
+        run: npx playwright test
+
