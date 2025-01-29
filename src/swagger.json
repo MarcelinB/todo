@@ -1,0 +1,41 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "To-Do API",
+      "version": "1.0.0",
+      "description": "API pour gérer des tâches"
+    },
+    "paths": {
+      "/api/tasks": {
+        "get": {
+          "summary": "Récupérer toutes les tâches",
+          "responses": {
+            "200": {
+              "description": "Liste des tâches"
+            }
+          }
+        },
+        "post": {
+          "summary": "Créer une tâche",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Tâche créée"
+            }
+          }
+        }
+      }
+    }
+  }
+  

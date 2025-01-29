@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center h-screen">
+
+    <div class="w-96 p-6 bg-gray-800 rounded-lg shadow-lg">
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Todo App</h1>
+            <button id="toggleDarkMode" class="text-gray-400 hover:text-white">
+                🌙
+            </button>
+        </div>
+
+        <div class="mt-4 flex">
+            <input id="taskInput" type="text" class="w-full p-2 rounded-md bg-gray-700 text-white" placeholder="Add a new todo...">
+            <button onclick="addTask()" class="ml-2 bg-white text-black p-2 rounded-md">+</button>
+        </div>
+
+        <ul id="taskList" class="mt-4 space-y-2"></ul>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:3000/api/tasks"; // Adapter selon ton serveur
+
+        // Charger les tâches au démarrage
+        async function loadTasks() {
+            const response = await fetch(API_URL);
+            const tasks = await response.json();
+            const taskList = document.getElementById("taskList");
+            taskList.innerHTML = "";
+
+            tasks.forEach(task => {
+                const li = document.createElement("li");
+                li.className = "flex justify-between bg-gray-700 p-2 rounded-md";
+                li.innerHTML = `
+                    <span>${task.title}</span>
+                    <button onclick="deleteTask(${task.id})" class="text-red-400 hover:text-red-600">❌</button>
+                `;
+                taskList.appendChild(li);
+            });
+        }
+
+        // Ajouter une tâche
+        async function addTask() {
+            const taskInput = document.getElementById("taskInput").value;
+            if (!taskInput.trim()) return;
+
+            await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title: taskInput, completed: false })
+            });
+
+            document.getElementById("taskInput").value = "";
+            loadTasks();
+        }
+
+        // Supprimer une tâche
+        async function deleteTask(id) {
+            await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+            loadTasks();
+        }
+
+        // Mode sombre
+        document.getElementById("toggleDarkMode").addEventListener("click", () => {
+            document.body.classList.toggle("bg-gray-100");
+            document.body.classList.toggle("text-black");
+        });
+
+        loadTasks();
+    </script>
+
+</body>
+</html>
