@@ -11,9 +11,7 @@
     <div class="w-96 p-6 bg-gray-800 rounded-lg shadow-lg">
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold">Todo App</h1>
-            <button id="toggleDarkMode" class="text-gray-400 hover:text-white">
-                🌙
-            </button>
+            <button id="toggleDarkMode" class="text-gray-400 hover:text-white">🌙</button>
         </div>
 
         <div class="mt-4 flex">
@@ -36,10 +34,18 @@
 
             tasks.forEach(task => {
                 const li = document.createElement("li");
-                li.className = "flex justify-between bg-gray-700 p-2 rounded-md";
+                li.className = "flex justify-between bg-gray-700 p-2 rounded-md items-center";
+                
+                // Ajout de l'élément avec gestion de modification et marquage "done"
                 li.innerHTML = `
-                    <span>${task.title}</span>
-                    <button onclick="deleteTask(${task.id})" class="text-red-400 hover:text-red-600">❌</button>
+                    <div class="flex items-center">
+                        <input type="checkbox" onclick="toggleDone(${task.id}, ${!task.completed})" ${task.completed ? "checked" : ""} class="mr-2">
+                        <span id="task-${task.id}" class="cursor-pointer ${task.completed ? "line-through text-gray-400" : ""}">${task.title}</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="editTask(${task.id}, '${task.title}')" class="text-blue-400 hover:text-blue-600">🖊️</button>
+                        <button onclick="deleteTask(${task.id})" class="text-red-400 hover:text-red-600">❌</button>
+                    </div>
                 `;
                 taskList.appendChild(li);
             });
@@ -63,6 +69,34 @@
         // Supprimer une tâche
         async function deleteTask(id) {
             await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+            loadTasks();
+        }
+
+        // Marquer une tâche comme complétée (toggle "done")
+        async function toggleDone(id, completed) {
+            await fetch(`${API_URL}/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ completed })
+            });
+            loadTasks();
+        }
+
+        // Modifier une tâche (ouverture de la boîte de dialogue)
+        function editTask(id, oldTitle) {
+            const newTitle = prompt("Modifier la tâche :", oldTitle);
+            if (newTitle && newTitle.trim() !== "") {
+                updateTask(id, newTitle);
+            }
+        }
+
+        // Mettre à jour une tâche
+        async function updateTask(id, title) {
+            await fetch(`${API_URL}/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title })
+            });
             loadTasks();
         }
 
