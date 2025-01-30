@@ -45,7 +45,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Démarrer le serveur en arrière-plan
-        run: node server.front.js &
+        run: node src/server.js &
 
       - name: Attendre que le serveur soit prêt
         run: sleep 5  # Attend 5 secondes avant de commencer les tests
