@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:e2e": "npm run start & playwright test",
+    "test:all": "npm run test && npm run test:e2e"
   },
   "keywords": [],
   "author": "",

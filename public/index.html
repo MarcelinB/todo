@@ -84,21 +84,38 @@
 
         // Modifier une tâche (ouverture de la boîte de dialogue)
         function editTask(id, oldTitle) {
-            const newTitle = prompt("Modifier la tâche :", oldTitle);
-            if (newTitle && newTitle.trim() !== "") {
-                updateTask(id, newTitle);
-            }
-        }
+            const taskElement = document.getElementById(`task-${id}`);
+            
+            // Créer un champ input à la place du texte
+            const input = document.createElement("input");
+            input.type = "text";
+            input.value = oldTitle;
+            input.className = "bg-gray-700 text-white p-1 rounded-md";
+
+            // Quand l'utilisateur valide avec Entrée
+            input.addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    updateTask(id, input.value);
+                }
+            });
+
+    // Remplace le texte par l'input
+    taskElement.replaceWith(input);
+    input.focus();
+}
+
 
         // Mettre à jour une tâche
         async function updateTask(id, title) {
-            await fetch(`${API_URL}/${id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ title })
-            });
-            loadTasks();
-        }
+    await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title })
+    });
+
+    loadTasks();
+}
+
 
         // Mode sombre
         document.getElementById("toggleDarkMode").addEventListener("click", () => {
