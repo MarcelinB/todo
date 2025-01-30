@@ -14,8 +14,14 @@ test.describe('To-Do App E2E', () => {
         await page.fill('#taskInput', taskText);
         await page.click('button:has-text("+")');
 
-        const task = page.locator('ul#taskList li').last();
-        await expect(task).toContainText(taskText);
+        // Attendre que la tâche soit ajoutée
+    await page.waitForFunction(() => {
+    return document.querySelectorAll('ul#taskList li').length > 0;
+    }, { timeout: 5000 });
+
+const task = page.locator('ul#taskList li').last();
+await expect(task).toContainText(taskText);
+
     });
 
     test('Marquer une tâche comme complétée', async ({ page }) => {
