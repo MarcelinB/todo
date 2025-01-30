@@ -5,7 +5,7 @@ export default defineConfig({
     command: "npx live-server --port=3001 --root=public",
     port: 3001,
     timeout: 30 * 1000,  // Attendre 30 secondes maximum
-    reuseExistingServer: !process.env.CI,  // Réutiliser le serveur en local
+    reuseExistingServer: true  // Réutiliser le serveur en local
   },
   testDir: './tests/e2e',
   use: {
