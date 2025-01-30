@@ -44,5 +44,11 @@ jobs:
       - name: Installer Playwright
         run: npx playwright install --with-deps
 
+      - name: Démarrer le serveur en arrière-plan
+        run: npx live-server --port=3001 --root=public &
+
+      - name: Attendre que le serveur soit prêt
+        run: sleep 5  # Attend 5 secondes avant de commencer les tests
+
       - name: Lancer les tests E2E (Playwright)
         run: npm run test:e2e
