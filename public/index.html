@@ -45,7 +45,6 @@
                 const li = document.createElement("li");
                 li.className = "flex justify-between bg-gray-700 p-2 rounded-md items-center";
                 
-                // Ajout de l'élément avec gestion de modification et marquage "done"
                 li.innerHTML = `
                     <div class="flex items-center">
                         <input type="checkbox" onclick="toggleDone(${task.id}, ${!task.completed})" ${task.completed ? "checked" : ""} class="mr-2">
@@ -118,20 +117,17 @@
         function editTask(id, oldTitle) {
             const taskElement = document.getElementById(`task-${id}`);
             
-            // Créer un champ input à la place du texte
             const input = document.createElement("input");
             input.type = "text";
             input.value = oldTitle;
             input.className = "bg-gray-700 text-white p-1 rounded-md";
 
-            // Quand l'utilisateur valide avec Entrée
             input.addEventListener("keypress", function (event) {
                 if (event.key === "Enter") {
                     updateTask(id, input.value);
                 }
             });
 
-            // Remplace le texte par l'input
             taskElement.replaceWith(input);
             input.focus();
         }
@@ -163,7 +159,6 @@
             document.body.classList.toggle("text-black");
         });
 
-        // Charger les tâches au chargement de la page
         loadTasks();
     </script>
 

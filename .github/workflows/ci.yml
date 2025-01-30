@@ -48,7 +48,7 @@ jobs:
         run: node src/server.js &
 
       - name: Attendre que le serveur soit prêt
-        run: sleep 5  # Attend 5 secondes avant de commencer les tests
+        run: sleep 5 
 
       - name: Lancer les tests E2E (Playwright)
         run: npm run test:e2e
