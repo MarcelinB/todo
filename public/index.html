@@ -23,9 +23,18 @@
     </div>
 
     <script>
-        const API_URL = "http://localhost:3000/api/tasks"; // Adapter selon ton serveur
+        /**
+         * @constant {string} API_URL - URL de l'API pour gérer les tâches.
+         */
+        const API_URL = "http://localhost:3000/api/tasks"; 
 
-        // Charger les tâches au démarrage
+
+        /**
+         * Charge toutes les tâches depuis l'API et les affiche dans la liste.
+         * @async
+         * @function loadTasks
+         * @returns {Promise<void>}
+         */
         async function loadTasks() {
             const response = await fetch(API_URL);
             const tasks = await response.json();
@@ -51,7 +60,12 @@
             });
         }
 
-        // Ajouter une tâche
+        /**
+         * Ajoute une nouvelle tâche en l'envoyant à l'API.
+         * @async
+         * @function addTask
+         * @returns {Promise<void>}
+         */
         async function addTask() {
             const taskInput = document.getElementById("taskInput").value;
             if (!taskInput.trim()) return;
@@ -66,13 +80,26 @@
             loadTasks();
         }
 
-        // Supprimer une tâche
+        /**
+         * Supprime une tâche en fonction de son ID.
+         * @async
+         * @function deleteTask
+         * @param {number} id - L'ID de la tâche à supprimer.
+         * @returns {Promise<void>}
+         */
         async function deleteTask(id) {
             await fetch(`${API_URL}/${id}`, { method: "DELETE" });
             loadTasks();
         }
 
-        // Marquer une tâche comme complétée (toggle "done")
+        /**
+         * Marque une tâche comme complétée ou non.
+         * @async
+         * @function toggleDone
+         * @param {number} id - L'ID de la tâche à modifier.
+         * @param {boolean} completed - L'état de complétion de la tâche.
+         * @returns {Promise<void>}
+         */
         async function toggleDone(id, completed) {
             await fetch(`${API_URL}/${id}`, {
                 method: "PUT",
@@ -82,7 +109,12 @@
             loadTasks();
         }
 
-        // Modifier une tâche (ouverture de la boîte de dialogue)
+        /**
+         * Permet de modifier une tâche en remplaçant son texte par un champ input.
+         * @function editTask
+         * @param {number} id - L'ID de la tâche à modifier.
+         * @param {string} oldTitle - Le titre actuel de la tâche.
+         */
         function editTask(id, oldTitle) {
             const taskElement = document.getElementById(`task-${id}`);
             
@@ -99,30 +131,39 @@
                 }
             });
 
-    // Remplace le texte par l'input
-    taskElement.replaceWith(input);
-    input.focus();
-}
+            // Remplace le texte par l'input
+            taskElement.replaceWith(input);
+            input.focus();
+        }
 
-
-        // Mettre à jour une tâche
+        /**
+         * Met à jour une tâche en modifiant son titre.
+         * @async
+         * @function updateTask
+         * @param {number} id - L'ID de la tâche à modifier.
+         * @param {string} title - Le nouveau titre de la tâche.
+         * @returns {Promise<void>}
+         */
         async function updateTask(id, title) {
-    await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title })
-    });
+            await fetch(`${API_URL}/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title })
+            });
 
-    loadTasks();
-}
+            loadTasks();
+        }
 
-
-        // Mode sombre
+        /**
+         * Active ou désactive le mode sombre.
+         * @function
+         */
         document.getElementById("toggleDarkMode").addEventListener("click", () => {
             document.body.classList.toggle("bg-gray-100");
             document.body.classList.toggle("text-black");
         });
 
+        // Charger les tâches au chargement de la page
         loadTasks();
     </script>
 

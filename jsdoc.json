@@ -1,0 +1,13 @@
+{
+    "source": {
+      "include": ["src", "public"],
+      "includePattern": [".js$"],
+      "excludePattern": "(node_modules|tests)"
+    },
+    "opts": {
+      "destination": "./docs",
+      "recurse": true
+    },
+    "plugins": []
+  }
+  
