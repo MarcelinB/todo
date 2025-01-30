@@ -7,7 +7,7 @@ export default defineConfig({
     timeout: 30 * 1000,  // Attendre 30 secondes maximum
     reuseExistingServer: true  // Réutiliser le serveur en local
   },
-  testDir: './tests/todo.e2e.test.js',
+  testDir: './tests/e2e',
   use: {
     baseURL: 'http://localhost:3001/index.html',
     headless: true,
